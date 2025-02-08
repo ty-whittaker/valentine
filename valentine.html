@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <!-- Add Google Fonts link here -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background-color: pink;
+            font-family: 'Lobster', cursive; /* Use Lobster font */
+            overflow: hidden;
+            position: relative;
+            color: white; /* All text will be white */
+        }
+        .envelope {
+            width: 300px;  /* Make the envelope bigger */
+            height: 220px;  /* Increase the height of the envelope */
+            background-color: #8064A2;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .envelope::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;  /* Adjust left border */
+            border-right: 150px solid transparent; /* Adjust right border */
+            border-bottom: 100px solid white; /* Adjust bottom border */
+            top: -100px;  /* Adjust position of the flap */
+        }
+        .envelope span {
+            font-size: 2rem; /* Increase font size */
+            font-weight: bold;
+        }
+        .letter {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.5s ease-out;
+            color: black; /* Text color inside the letter */
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Pop-up animation for new "Yes" buttons */
+        @keyframes popUp {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        button {
+            font-size: 1.5rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            color: white; /* Make button text white */
+        }
+        .yes {
+            background-color: #8064A2;
+            animation: popUp 0.5s ease-out;
+        }
+        .no {
+            background-color: white;
+            color: #8064A2;
+        }
+        @media (max-width: 600px) {
+            button {
+                font-size: 2rem; /* Larger text for buttons on smaller screens */
+                padding: 15px 30px; /* Make buttons easier to tap */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="envelope" onclick="openLetter()">
+        <span>For: Meili</span>
+    </div>
+    <div class="letter" id="letter">
+        <h1>You've BEAN my girlfriend, but will you be my Valentine? 💖</h1>
+        <div class="buttons">
+            <button class="yes" onclick="sayYes()">Yes</button>
+            <button class="no" onclick="duplicateYes()">No</button>
+        </div>
+    </div>
+    <script>
+        let noClickCount = 0;
+        function openLetter() {
+            document.querySelector('.envelope').style.display = 'none';
+            document.getElementById('letter').style.display = 'flex';
+        }
+        function sayYes() {
+            document.body.innerHTML = "<h1>💖 LET'S GOOOOOOO!!! 💖</h1>";
+        }
+        function duplicateYes() {
+            noClickCount++;
+            if (noClickCount >= 5) {
+                document.body.innerHTML = "";
+                let fullScreenYes = document.createElement("button");
+                fullScreenYes.className = "yes";
+                fullScreenYes.innerText = "YES";
+                fullScreenYes.style.position = "absolute";
+                fullScreenYes.style.top = "0";
+                fullScreenYes.style.left = "0";
+                fullScreenYes.style.width = "100vw";
+                fullScreenYes.style.height = "100vh";
+                fullScreenYes.style.fontSize = "3rem";
+                fullScreenYes.onclick = sayYes;
+                document.body.appendChild(fullScreenYes);
+            } else {
+                let newButton = document.createElement("button");
+                newButton.className = "yes";
+                newButton.innerText = "Yes";
+                newButton.onclick = sayYes;
+                let size = 50 + noClickCount * 20;
+                newButton.style.fontSize = size + "px";
+                newButton.style.position = "absolute";
+                newButton.style.left = Math.random() * (window.innerWidth - size) + "px";
+                newButton.style.top = Math.random() * (window.innerHeight - size) + "px";
+                newButton.style.animation = "popUp 0.5s ease-out"; // Apply the pop-up animation
+                document.body.appendChild(newButton);
+            }
+        }
+    </script>
+</body>
+
+</html>
